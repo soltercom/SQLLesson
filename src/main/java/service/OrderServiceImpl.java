@@ -1,5 +1,7 @@
 package service;
 
+import model.OrderNotFound;
+import repository.Repository;
 import repository.RepositoryImpl;
 
 import java.math.BigDecimal;
@@ -7,9 +9,9 @@ import java.util.Objects;
 
 public class OrderServiceImpl implements OrderService {
 
-    private final RepositoryImpl repository;
+    private final Repository repository;
 
-    public OrderServiceImpl(RepositoryImpl repository) {
+    public OrderServiceImpl(Repository repository) {
         this.repository = repository;
     }
 
@@ -32,7 +34,8 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public void displayOrder(long orderId) {
-        var order = repository.getOrderById(orderId).orElseThrow();
+        var order = repository.getOrderById(orderId)
+                .orElseThrow(() -> new OrderNotFound(orderId));
         var orderItemList = repository.getOrderItemsList(orderId);
 
         System.out.println(order);
