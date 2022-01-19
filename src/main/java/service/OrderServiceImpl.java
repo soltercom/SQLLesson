@@ -2,7 +2,6 @@ package service;
 
 import model.OrderNotFound;
 import repository.Repository;
-import repository.RepositoryImpl;
 
 import java.math.BigDecimal;
 import java.util.Objects;
@@ -23,6 +22,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     public long addItem(long orderId, String name, int count, BigDecimal price) {
+        Objects.requireNonNull(name);
         if (name.isEmpty()) throw new RuntimeException("Item should has a name");
         return repository.addItem(orderId, name, count, price);
     }
